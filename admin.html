@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Pro - Vargas Web</title>
+    
+    <!-- Library Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+    <style id="dynamicAccentStyle"></style>
+    <style>
+        .admin-wrapper { width: 100%; max-width: 650px; margin: 30px auto; background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 25px; box-sizing: border-box; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7); }
+        #loginSection { max-width: 400px; margin: 40px auto; background: rgba(255,255,255,0.02); padding: 25px; border-radius: 20px; border: 1px solid var(--border); text-align: center; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 6px; display: block; }
+        .admin-input { width: 100%; padding: 12px 14px; background: #030712; border: 1px solid var(--border); border-radius: 10px; color: #fff; font-size: 13px; box-sizing: border-box; outline: none; }
+        .admin-input:focus { border-color: var(--primary); }
+        .admin-btn { width: 100%; padding: 12px; background: var(--primary); color: #000; border: none; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; }
+        .admin-tabs { display: grid; grid-template-columns: repeat(2, 1fr); background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 4px; gap: 4px; margin-bottom: 15px; }
+        .tab-btn { background: none; border: none; color: var(--text-muted); padding: 8px; font-size: 11px; font-weight: 700; border-radius: 6px; cursor: pointer; text-align: center; }
+        .tab-btn.active { background: var(--primary); color: #050608; }
+        .admin-panel-content { display: none; flex-direction: column; gap: 10px; }
+        .admin-panel-content.active { display: flex; }
+        .card-group { background: rgba(255, 255, 255, 0.015); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; position: relative; }
+        .card-group-header { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+        .remove-card-btn { background: rgba(255, 80, 80, 0.15); color: #ff5f56; border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .admin-actions-footer { margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="admin-wrapper">
+    <!-- LOGIN SECTION -->
+    <div id="loginSection">
+        <h2>Vargas Admin Pro</h2>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 20px;">Masuk menggunakan akun Supabase Auth</p>
+        
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="emailInput" class="admin-input" placeholder="admin@vargas.id">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="passwordInput" class="admin-input" placeholder="••••••••">
+        </div>
+        
+        <button class="admin-btn" onclick="handleLogin()">Login Dashboard</button>
+        <div id="errorMsg" style="color: #f87171; font-size: 11px; margin-top: 10px; display:none;">Email atau password salah!</div>
+    </div>
+
+    <!-- DASHBOARD SECTION -->
+    <div id="dashboardSection" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border);">
+            <a href="index.html" style="font-size: 12px; color: var(--primary); text-decoration: none; font-weight: 700;">← Beranda</a>
+            <h2 style="font-size: 15px; margin: 0;">⚙️ Master Dashboard</h2>
+            <button onclick="handleLogout()" style="background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.3); padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">Keluar</button>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchTab('profile')">👤 Profil & Teks</button>
+            <button class="tab-btn" onclick="switchTab('terminal')">💻 Terminal Info</button>
+            <button class="tab-btn" onclick="switchTab('tools')">🛠️ Hamburger Menu</button>
+            <button class="tab-btn" onclick="switchTab('socials')">🌐 Sosmed & Warna</button>
+        </div>
+
+        <!-- TAB 1 -->
+        <div id="tab-profile" class="admin-panel-content active">
+            <div class="form-group"><label>Teks Logo Navbar:</label><input type="text" id="inputNavLogo" class="admin-input"></div>
+            <div class="form-group"><label>Banner Sambutan:</label><textarea id="inputWelcome" class="admin-input" rows="2"></textarea></div>
+            <div class="form-group"><label>URL Avatar:</label><input type="text" id="inputAvatar" class="admin-input"></div>
+            <div class="form-group"><label>Nama Lengkap:</label><input type="text" id="inputName" class="admin-input"></div>
+            <div class="form-group"><label>Role / Profesi:</label><input type="text" id="inputRole" class="admin-input"></div>
+            <div class="form-group"><label>Bio Singkat:</label><textarea id="inputBio" class="admin-input" rows="3"></textarea></div>
+            <div class="form-group"><label>Tech Skills:</label><input type="text" id="inputSkills" class="admin-input"></div>
+        </div>
+
+        <!-- TAB 2 -->
+        <div id="tab-terminal" class="admin-panel-content">
+            <div class="form-group"><label>Status:</label><input type="text" id="inputTermStatus" class="admin-input"></div>
+            <div class="form-group"><label>Lokasi:</label><input type="text" id="inputTermLoc" class="admin-input"></div>
+            <div class="form-group"><label>Fokus:</label><input type="text" id="inputTermFocus" class="admin-input"></div>
+            <div class="form-group"><label>Email:</label><input type="text" id="inputTermEmail" class="admin-input"></div>
+        </div>
+
+        <!-- TAB 3 -->
+        <div id="tab-tools" class="admin-panel-content">
+            <div class="form-group"><label>Judul Hamburger Utama:</label><input type="text" id="inputHamburgerTitle" class="admin-input"></div>
+            <div id="projectsEditorContainer" style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px;"></div>
+            <button onclick="addProjectRow()" class="admin-btn-secondary">+ Tambah Item</button>
+        </div>
+
+        <!-- TAB 4 -->
+        <div id="tab-socials" class="admin-panel-content">
+            <div class="form-group">
+                <label>Warna Utama (Accent Color):</label>
+                <select id="inputAccentColor" class="admin-input">
+                    <option value="#00f5a0">Hijau Neon</option>
+                    <option value="#3b82f6">Biru Modern</option>
+                    <option value="#a855f7">Ungu Premium</option>
+                    <option value="#f59e0b">Gold / Amber</option>
+                    <option value="#ec4899">Pink Magenta</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Teks Footer:</label><input type="text" id="inputFooter" class="admin-input"></div>
+            <div id="socialsEditorContainer" style="display: flex; flex-direction: column; gap: 8px; margin-top: 5px;"></div>
+            <button onclick="addSocialRow()" class="admin-btn-secondary">+ Tambah Sosmed</button>
+        </div>
+
+        <div class="admin-actions-footer">
+            <button onclick="saveAllSettingsToSupabase()" class="admin-btn">💾 Simpan ke Supabase</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    db.auth.getSession().then(({ data: { session } }) => {
+        if (session) showDashboard();
+    });
+
+    async function handleLogin() {
+        const email = document.getElementById('emailInput').value.trim();
+        const password = document.getElementById('passwordInput').value.trim();
+        const errorMsg = document.getElementById('errorMsg');
+
+        const { data, error } = await db.auth.signInWithPassword({ email, password });
+
+        if (error) {
+            errorMsg.style.display = 'block';
+        } else {
+            errorMsg.style.display = 'none';
+            showDashboard();
+        }
+    }
+
+    async function handleLogout() {
+        await db.auth.signOut();
+        document.getElementById('dashboardSection').style.display = 'none';
+        document.getElementById('loginSection').style.display = 'block';
+    }
+
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.admin-panel-content').forEach(content => content.classList.remove('active'));
+
+        if (tabName === 'profile') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('tab-profile').classList.add('active');
+        } else if (tabName === 'terminal') {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('tab-terminal').classList.add('active');
+        } else if (tabName === 'tools') {
+            document.querySelectorAll('.tab-btn')[2].classList.add('active');
+            document.getElementById('tab-tools').classList.add('active');
+        } else if (tabName === 'socials') {
+            document.querySelectorAll('.tab-btn')[3].classList.add('active');
+            document.getElementById('tab-socials').classList.add('active');
+        }
+    }
+
+    async function showDashboard() {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('dashboardSection').style.display = 'block';
+
+        let data = await fetchMasterDataFromSupabase();
+        if (!data) data = DEFAULT_DATA;
+        
+        document.getElementById('inputNavLogo').value = data.profile?.navLogo || 'Vargas';
+        document.getElementById('inputWelcome').value = data.profile?.welcomeText || '';
+        document.getElementById('inputName').value = data.profile?.name || '';
+        document.getElementById('inputRole').value = data.profile?.role || '';
+        document.getElementById('inputBio').value = data.profile?.bio || '';
+        document.getElementById('inputAvatar').value = data.profile?.avatar || '';
+        document.getElementById('inputSkills').value = data.profile?.skills || '';
+        document.getElementById('inputAccentColor').value = data.profile?.accentColor || '#00f5a0';
+        document.getElementById('inputHamburgerTitle').value = data.profile?.hamburgerTitle || '🛠️ My Tools & Projects';
+        document.getElementById('inputFooter').value = data.profile?.footerText || '';
+
+        document.getElementById('inputTermStatus').value = data.terminal?.status || '';
+        document.getElementById('inputTermLoc').value = data.terminal?.location || '';
+        document.getElementById('inputTermFocus').value = data.terminal?.focus || '';
+        document.getElementById('inputTermEmail').value = data.terminal?.email || '';
+
+        renderProjectsEditor(data.projects || DEFAULT_DATA.projects);
+        renderSocialsEditor(data.socials || DEFAULT_DATA.socials);
+    }
+
+    function renderProjectsEditor(projects) {
+        const container = document.getElementById('projectsEditorContainer');
+        if(!container) return;
+        container.innerHTML = '';
+        projects.forEach((proj, idx) => {
+            const isText = proj.type === 'text';
+            container.innerHTML += `
+                <div class="card-group">
+                    <div class="card-group-header">
+                        <span>Item Menu #${idx + 1}</span>
+                        <button type="button" class="remove-card-btn" onclick="this.closest('.card-group').remove()">×</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipe Item:</label>
+                        <select class="admin-input p-type" onchange="toggleUrlInput(this)">
+                            <option value="tool" ${!isText?'selected':''}>Tool / Link Website</option>
+                            <option value="text" ${isText?'selected':''}>Teks / About Me</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Judul:</label><input type="text" class="admin-input p-title" value="${proj.title || ''}"></div>
+                    <div class="form-group"><label>Deskripsi:</label><input type="text" class="admin-input p-desc" value="${proj.desc || ''}"></div>
+                    <div class="form-group url-group" style="display: ${isText?'none':'block'};">
+                        <label>URL Link:</label><input type="text" class="admin-input p-url" value="${proj.url || ''}">
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function toggleUrlInput(selectElem) {
+        const group = selectElem.closest('.card-group');
+        const urlGroup = group.querySelector('.url-group');
+        if (selectElem.value === 'text') {
+            urlGroup.style.display = 'none';
+        } else {
+            urlGroup.style.display = 'block';
+        }
+    }
+
+    function renderSocialsEditor(socials) {
+        const container = document.getElementById('socialsEditorContainer');
+        if(!container) return;
+        container.innerHTML = '';
+        socials.forEach((soc, idx) => {
+            container.innerHTML += `
+                <div class="card-group">
+                    <div class="card-group-header">
+                        <span>Sosmed #${idx + 1}</span>
+                        <button type="button" class="remove-card-btn" onclick="this.closest('.card-group').remove()">×</button>
+                    </div>
+                    <div class="form-group">
+                        <label>Platform:</label>
+                        <select class="admin-input s-type">
+                            <option value="instagram" ${soc.type==='instagram'?'selected':''}>Instagram</option>
+                            <option value="tiktok" ${soc.type==='tiktok'?'selected':''}>TikTok</option>
+                            <option value="facebook" ${soc.type==='facebook'?'selected':''}>Facebook</option>
+                            <option value="whatsapp" ${soc.type==='whatsapp'?'selected':''}>WhatsApp</option>
+                            <option value="youtube" ${soc.type==='youtube'?'selected':''}>YouTube</option>
+                            <option value="github" ${soc.type==='github'?'selected':''}>GitHub</option>
+                            <option value="telegram" ${soc.type==='telegram'?'selected':''}>Telegram</option>
+                            <option value="donate" ${soc.type==='donate'?'selected':''}>Donasi / Saweria</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Label:</label><input type="text" class="admin-input s-name" value="${soc.name || ''}"></div>
+                    <div class="form-group"><label>URL:</label><input type="text" class="admin-input s-url" value="${soc.url || ''}"></div>
+                </div>
+            `;
+        });
+    }
+
+    function addProjectRow() {
+        const container = document.getElementById('projectsEditorContainer');
+        if(!container) return;
+        container.insertAdjacentHTML('beforeend', `
+            <div class="card-group">
+                <div class="card-group-header">
+                    <span>Item Baru</span>
+                    <button type="button" class="remove-card-btn" onclick="this.closest('.card-group').remove()">×</button>
+                </div>
+                <div class="form-group">
+                    <label>Tipe Item:</label>
+                    <select class="admin-input p-type" onchange="toggleUrlInput(this)">
+                        <option value="tool">Tool / Link Website</option>
+                        <option value="text">Teks / About Me</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Judul:</label><input type="text" class="admin-input p-title" value=""></div>
+                <div class="form-group"><label>Deskripsi:</label><input type="text" class="admin-input p-desc" value=""></div>
+                <div class="form-group url-group"><label>URL Link:</label><input type="text" class="admin-input p-url" value=""></div>
+            </div>
+        `);
+    }
+
+    function addSocialRow() {
+        const container = document.getElementById('socialsEditorContainer');
+        if(!container) return;
+        container.insertAdjacentHTML('beforeend', `
+            <div class="card-group">
+                <div class="card-group-header">
+                    <span>Sosmed Baru</span>
+                    <button type="button" class="remove-card-btn" onclick="this.closest('.card-group').remove()">×</button>
+                </div>
+                <div class="form-group">
+                    <label>Platform:</label>
+                    <select class="admin-input s-type">
+                        <option value="instagram">Instagram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="github">GitHub</option>
+                        <option value="telegram">Telegram</option>
+                        <option value="donate">Donasi / Saweria</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Label:</label><input type="text" class="admin-input s-name" value=""></div>
+                <div class="form-group"><label>URL:</label><input type="text" class="admin-input s-url" value=""></div>
+            </div>
+        `);
+    }
+
+    async function saveAllSettingsToSupabase() {
+        const profile = {
+            navLogo: document.getElementById('inputNavLogo').value,
+            welcomeText: document.getElementById('inputWelcome').value,
+            name: document.getElementById('inputName').value,
+            role: document.getElementById('inputRole').value,
+            bio: document.getElementById('inputBio').value,
+            avatar: document.getElementById('inputAvatar').value,
+            skills: document.getElementById('inputSkills').value,
+            accentColor: document.getElementById('inputAccentColor').value,
+            hamburgerTitle: document.getElementById('inputHamburgerTitle').value,
+            footerText: document.getElementById('inputFooter').value
+        };
+
+        const terminal = {
+            status: document.getElementById('inputTermStatus').value,
+            location: document.getElementById('inputTermLoc').value,
+            focus: document.getElementById('inputTermFocus').value,
+            email: document.getElementById('inputTermEmail').value
+        };
+
+        const projects = [];
+        document.querySelectorAll('#projectsEditorContainer .card-group').forEach(row => {
+            const type = row.querySelector('.p-type').value;
+            projects.push({
+                type: type,
+                title: row.querySelector('.p-title').value,
+                desc: row.querySelector('.p-desc').value,
+                url: type === 'text' ? '' : row.querySelector('.p-url').value
+            });
+        });
+
+        const socials = [];
+        document.querySelectorAll('#socialsEditorContainer .card-group').forEach(row => {
+            const type = row.querySelector('.s-type').value;
+            socials.push({
+                type: type,
+                name: row.querySelector('.s-name').value,
+                url: row.querySelector('.s-url').value,
+                donate: type === 'donate'
+            });
+        });
+
+        const masterData = { profile, terminal, projects, socials };
+        
+        try {
+            const { error } = await db.from('settings').upsert({ id: 1, payload: masterData });
+            if (error) {
+                alert('Gagal menyimpan ke Supabase: ' + error.message);
+            } else {
+                alert('Berhasil disimpan ke Supabase Database!');
+            }
+        } catch(e) {
+            alert('Terjadi kesalahan koneksi server.');
+        }
+    }
+</script>
+</body>
+</html>
