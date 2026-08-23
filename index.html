@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vargas Dwi Arshafin — Software Developer & Creator</title>
+    
+    <meta name="description" content="Official professional portfolio and web tools hub." />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toastNotification" class="toast-notif">
+         <span id="toastText">Berhasil disalin!</span>
+    </div>
+
+    <!-- AMBIENT LIGHTING -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <!-- NAVBAR -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Vargas<span class="dot">.</span></a>
+            
+            <nav class="nav-links">
+                <a href="#about">About</a>
+                <a href="#terminal">Terminal</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-btn" id="closeBtn">&times;</button>
+        <div class="mobile-nav-links">
+            <a href="#about" class="mobile-link">About Me</a>
+            <a href="#terminal" class="mobile-link">Terminal</a>
+            <a href="#contact" class="mobile-link">Get in Touch</a>
+            
+            <div class="mobile-menu-divider"></div>
+            
+            <button class="mobile-dropdown-btn" id="toolsDropdownBtn">
+                <span> My Tools & Projects</span>
+                <span id="dropdownArrow"></span>
+            </button>
+            
+            <div class="mobile-dropdown-content" id="toolsDropdownContent">
+                <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 4px;">
+                    <a href="https://tiktok-caption.vercel.app" class="mobile-tool-card" target="_blank">
+                        <div class="mobile-tool-title">TikTok Caption Copier </div>
+                        <div class="mobile-tool-desc">Ekstrak dan salin deskripsi serta hashtag video TikTok.</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="main-container">
+        
+        <!-- HERO PROFILE -->
+        <section id="about" class="hero-section">
+            <div class="profile-card">
+                <div class="avatar-ring">
+                    <div class="avatar-box" id="avatarContainer">
+                        <span class="avatar-text">V</span>
+                    </div>
+                </div>
+                
+                <div class="status-badge">
+                    <span class="status-dot"></span> <span id="localTimeStatus">WIB • Ready to Code</span>
+                </div>
+
+                <h1 class="profile-name">Vargas Dwi Arshafin</h1>
+                <p class="profile-role">Full-Stack & Web App Creator</p>
+                
+                <p class="profile-bio">
+                    Membangun ekosistem web interaktif, alat utilitas digital berkecepatan tinggi, serta pengalaman antarmuka yang bersih dan modern.
+                </p>
+
+                <div class="tech-pills">
+                    <span>JavaScript</span>
+                    <span>HTML5/CSS3</span>
+                    <span>UI/UX</span>
+                    <span>Serverless</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TERMINAL -->
+        <section id="terminal" class="content-section">
+            <div class="section-header">
+                <h2>Quick Info Terminal</h2>
+                <span class="section-subtitle">Developer Status & Specs</span>
+            </div>
+
+            <div class="terminal-box">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <span class="dot-red"></span>
+                        <span class="dot-yellow"></span>
+                        <span class="dot-green"></span>
+                    </div>
+                    <span class="terminal-title">vargas@system ~ profile.sh</span>
+                </div>
+                <div class="terminal-body">
+                    <p><span class="t-prompt">$</span> status: <span class="t-string">"Building scalable web tools"</span></p>
+                    <p><span class="t-prompt">$</span> location: <span class="t-string">"Magelang, Indonesia "</span></p>
+                    <p><span class="t-prompt">$</span> focus: <span class="t-string">"Frontend Engineering & SEO"</span></p>
+                    <p><span class="t-prompt">$</span> contact_email: <span class="t-link" onclick="copyToClipboard('vargas@web.id', 'Email berhasil disalin!')">vargas@web.id [Copy]</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOCIALS SECTION -->
+        <section id="contact" class="content-section">
+            <div class="section-header">
+                <h2>Connect & Support</h2>
+                <span class="section-subtitle">Mari Terhubung di Platform Lain</span>
+            </div>
+
+            <div class="social-grid">
+                <a href="https://instagram.com/@vrgasz" class="social-card" target="_blank">
+                    <div class="social-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </div>
+                    <div class="social-details">
+                        <div class="social-name">Instagram</div>
+                    </div>
+                </a>
+                <a href="https://tiktok.com/@vrgasz" class="social-card" target="_blank">
+                    <div class="social-icon-circle">
+                        <svg viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a73.2,73.2,0,1,0,62.83,72.43V0h90.35a208.87,208.87,0,0,0,23,79.52A206.57,206.57,0,0,0,448,157.17Z"/></svg>
+                    </div>
+                    <div class="social-details">
+                        <div class="social-name">TikTok</div>
+                    </div>
+                </a>
+                <a href="https://facebook.com/vrgasz" class="social-card" target="_blank">
+                    <div class="social-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+                    </div>
+                    <div class="social-details">
+                        <div class="social-name">Facebook</div>
+                    </div>
+                </a>
+                <a href="https://whatsapp.com/channel/0029Vb04Aqn545uzqgcFT53E" class="social-card" target="_blank">
+                    <div class="social-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.503-5.73-1.455L0 24zm6.59-4.846c1.6.95 3.488 1.449 5.413 1.451 5.428 0 9.847-4.416 9.85-9.846.002-2.63-1.02-5.101-2.876-6.958C17.168 1.984 14.695.965 12.007.965c-5.432 0-9.852 4.417-9.855 9.848-.002 2.028.53 4.02 1.543 5.793L2.68 21.325l4.967-1.302L6.647 19.154zm8.62-5.526c-.307-.154-1.815-.895-2.097-.997-.281-.103-.486-.154-.69.154-.204.307-.792.997-.971 1.202-.18.205-.359.227-.666.073-.307-.153-1.297-.478-2.47-1.526-.913-.815-1.53-1.821-1.709-2.128-.18-.307-.02-.473.134-.627.139-.138.307-.358.461-.537.154-.18.205-.307.307-.512.103-.205.051-.384-.026-.537-.077-.153-.69-1.662-.946-2.277-.25-.6-.522-.518-.717-.528-.184-.009-.396-.01-.607-.01-.211 0-.556.079-.846.396-.29.317-1.109 1.085-1.109 2.645 0 1.56 1.134 3.068 1.292 3.284.158.215 2.23 3.403 5.402 4.77 1.202.518 2.016.744 2.703.963 1.21.383 2.31.33 3.18.2.97-.146 1.815-.596 2.072-1.15.256-.554.256-1.03.18-1.13-.077-.103-.282-.154-.59-.308z"/></svg>
+                    </div>
+                    <div class="social-details">
+                        <div class="social-name">Saluran</div>
+                    </div>
+                </a>
+                
+                <!-- Tombol Donasi Melebar di Bawah -->
+                <a href="https://saweria.co/vrgasz" class="social-card donate-card" target="_blank">
+                    <div class="social-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                    </div>
+                    <div class="social-details">
+                        <div class="social-name">Dukung Lewat Donasi</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p>VARGAS © <span id="currentYear"></span> • Designed with Professional Standards</p>
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
